@@ -72,6 +72,36 @@
             </field>
         </record>
 
+        <record id="action_serials" model="ir.actions.act_window">
+            <field name="name">Numero de Serie</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.serial</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_contracts" model="ir.actions.act_window">
+            <field name="name">Número de Contrato</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Tipos de Ventas"
+            id="menu_sale_types"
+            parent="sale.sale_menu_root"
+            sequence="4"/>
+
+        <menuitem name="Número de Serie"
+            action="action_serials"
+            id="submenu_serials"
+            parent="menu_sale_types"
+            sequence="1"/>
+
+        <menuitem name="Número de Contratos"
+            action="action_contracts"
+            id="submenu_contracts"
+            parent="menu_sale_types"
+            sequence="2"/>
 
     </data>
 </odoo>

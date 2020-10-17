@@ -8,4 +8,4 @@ class ResSerial(models.Model):
     _name = 'res.serial'
     _description = 'Número de serie'
 
-    name = fields.Char(string="Numero de serie")
+    name = fields.Char(string="Numero de serie", required=True)
