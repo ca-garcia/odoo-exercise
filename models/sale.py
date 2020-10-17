@@ -20,12 +20,16 @@ class SaleOrderLine(models.Model):
         ('155', 'Protección 155'),
     ]
 
-    type = fields.Selection(SALE_TYPE_SELECTION, string='Tipo', required=True)
+    type = fields.Selection(SALE_TYPE_SELECTION, string='Tipo')
     serial_id = fields.Many2one('res.serial', string='Numero de serie')
     contract_id = fields.Many2one('res.contract', string='Numero de Contrato')
     price_rent = fields.Float(string='Precio Renta', default=0)
     protection = fields.Selection(PROTECTION_SELECTION, string='Proteccion de equipo ')
     product_serv_id = fields.Many2one('product.product', string='Servicio')
+
+    @api.onchange('product_serv_id')
+    def _onchange_product_serv_id(self):
+        self.price_rent = self.product_serv_id.lst_price
 
     def add_line_wizard(self):
         new_line = [(0, 0, {

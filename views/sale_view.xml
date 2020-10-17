@@ -11,27 +11,28 @@
                 <form string="Tipo de Venta">
                     <sheet>
                         <div class="oe_title">
-                            <h1><span>Añadir Línea de Presupuesto:</span></h1>
+                            <h2><span>Añadir Línea de Presupuesto:</span></h2>
                         </div>
                         <group>
                             <group>
                                 <field name="order_id" invisible="0"/>
-                                <field name="type"/>
+                                <field name="type" required="1"/>
                                 <field name="product_id" options="{'no_create_edit': True, 'no_create':True}" required="1"
-                                       domain="[('type','=','product')]"/>
-                                <field name="product_uom_qty" options="{'no_create':True}"/>
-                                <field name="product_uom" options="{'no_create':True}"  required="1"/>
-                                <field name="price_unit"/>
+                                       domain="[('type','in',('product','service'))]" string="Producto"/>
+                                <field name="product_uom_qty" options="{'no_create':True}" string="Cantidad"/>
+                                <field name="product_uom" options="{'no_create':True}" required="1" string="Unidad de medida"/>
+                                <field name="price_unit" string="Precio unitario"/>
                                 <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
-                                        domain="[('type_tax_use','=','sale')]"/>
+                                        domain="[('type_tax_use','=','sale')]" string="Impuestos"/>
                             </group>
-                            <group>
+                            <group attrs="{'invisible': [('type','=',False)]}">
                                 <field name="serial_id" attrs="{'invisible': [('type','=','plan')]}" string="Número de serie"/>
                                 <field name="contract_id" attrs="{'invisible': [('type','=','plan')]}" string="Número de Contrato"/>
-                                <field name="product_serv_id" domain="[('type','=','service')]"
-                                       attrs="{'invisible': [('type','=','prepay')], 'required': [('type','in',('plan','activation'))]}"/>
                                 <field name="protection" attrs="{'invisible': [('type','!=','activation')]}" string="Protección de equipo"/>
-                                <field name="price_rent" attrs="{'invisible': [('type','=','prepay')]}"/>
+                                <field name="product_serv_id" domain="[('type','=','service')]"
+                                       attrs="{'invisible': [('type','in',('prepay','plan'))], 'required': [('type','in',('activation'))]}"/>
+                                <field name="price_rent"
+                                       attrs="{'invisible': [('type','in',('prepay','plan'))], 'required': [('type','in',('activation'))]}"/>
                             </group>
                             <group invisible="1">
                                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>

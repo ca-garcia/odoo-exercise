@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @author Carlos A. Garcia -->
+<odoo>
+	<data>
+		<template id="report_saleorder_document_inh" inherit_id="sale.report_saleorder_document">
+			<xpath expr="//div[@class='page']/table[1]/thead/tr//th[@name='th_quantity']" position="before">
+				<th name="th_type" class="text-right">Tipo</th>
+			</xpath>
+			<xpath expr="//div[@class='page']/table[1]/tbody//tr//td[@name='td_name']" position="after">
+<!--				<t t-if="line.type">-->
+					<td name="td_type" class="text-right">
+						<span t-field="line.type"/>
+					</td>
+<!--				</t>-->
+			</xpath>
+			<xpath expr="//div[@class='page']/table[1]/tbody//tr" position="inside">
+				<tr t-if="line.type" style="border-top: 1px solid red;">
+						<td name="td_long_line" colspan="99" class="text-right" style="font-size:11pt;">
+							<t t-if="line.serial_id">
+								<span><strong>No. Serie: </strong></span>
+								<span t-field="line.serial_id"/>
+							</t>
+							<t t-if="line.contract_id">
+								<span><strong> Contrato: </strong></span>
+								<span t-field="line.contract_id"/>
+							</t>
+							<t t-if="line.protection">
+								<span><strong> Protección: </strong></span>
+								<span t-field="line.protection"/>
+							</t>
+							<t t-if="line.product_serv_id">
+								<span><strong> Servicio Renta: </strong></span>
+								<span t-field="line.product_serv_id"/>
+							</t>
+							<t t-if="line.price_rent">
+								<span><strong> Precio Renta: </strong>$</span>
+								<span t-field="line.price_rent"/>
+							</t>
+						</td>
+				</tr>
+			</xpath>
+		</template>
+
+	</data>
+</odoo>
