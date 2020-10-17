@@ -83,6 +83,7 @@ class SaleOrderLine(models.Model):
         })]
         sale = self.env['sale.order'].search([('id', '=', self.order_id.id)])
         sale.write({'order_line': new_line, 'auto_deliver': auto_deliver})
+        _logger.info("::::: Linea insertada en Orden de Venta[ID=%i] :::::", sale.id)
         return {'type': 'ir.actions.act_window_close'}
 
 
