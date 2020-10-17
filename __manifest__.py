@@ -16,6 +16,7 @@
         'security/ir.model.access.csv',
         'views/sale_view.xml',
         'report/report_saleorder_pdf.xml',
+        'report/report_sale_pivot_view.xml',
     ],
     'installable': True,
     'auto_install': False,

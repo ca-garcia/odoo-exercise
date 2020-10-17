@@ -26,13 +26,37 @@ class SaleOrderLine(models.Model):
     type = fields.Selection(SALE_TYPE_SELECTION, string='Tipo')
     serial_id = fields.Many2one('res.serial', string='Numero de serie')
     contract_id = fields.Many2one('res.contract', string='Numero de Contrato')
-    price_rent = fields.Float(string='Precio Renta', default=0)
-    protection = fields.Selection(PROTECTION_SELECTION, string='Proteccion de equipo ')
+    price_rent = fields.Float(string='Precio Renta')
+    protection = fields.Selection(PROTECTION_SELECTION, string='Proteccion de equipo')
     product_serv_id = fields.Many2one('product.product', string='Servicio')
 
     @api.onchange('product_serv_id')
     def _onchange_product_serv_id(self):
         self.price_rent = self.product_serv_id.lst_price
+
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
+        for line in self:
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty,
+                                            product=line.product_id, partner=line.order_id.partner_shipping_id)
+            taxes_rent_included = 0
+            taxes_rent_excluded = 0
+            price_tax_rent = 0
+            if line.type == 'activation':
+                taxes_rent = line.tax_id.compute_all(line.price_rent, line.order_id.currency_id, 1,
+                                                     product=line.product_serv_id, partner=line.order_id.partner_shipping_id)
+                taxes_rent_included = taxes_rent['total_included']
+                taxes_rent_excluded = taxes_rent['total_excluded']
+                price_tax_rent = sum(t.get('amount', 0.0) for t in taxes_rent.get('taxes', []))
+            line.update({
+                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])) + price_tax_rent,
+                'price_total': taxes['total_included'] + taxes_rent_included,
+                'price_subtotal': taxes['total_excluded'] + taxes_rent_excluded,
+            })
 
     def add_line_wizard(self):
         auto_deliver = False

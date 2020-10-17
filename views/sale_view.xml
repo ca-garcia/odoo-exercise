@@ -56,18 +56,22 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']" position="before">
                     <button name="select_line_wizard" type="object" string="Añadir línea" class="btn-primary"/>
+                    <br/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="before">
                     <field name="type" />
+                    <field name="product_serv_id" domain="[('type','=','service')]"
+                           attrs="{'invisible': [('type','in',('prepay','plan'))]}"/>
+                    <field name="price_rent" attrs="{'invisible': [('type','in',('prepay','plan'))]}"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/form/group/group[2]" position="inside">
                     <field name="type" />
                     <field name="serial_id" attrs="{'invisible': [('type','=','plan')]}" string="Número de serie"/>
                     <field name="contract_id" attrs="{'invisible': [('type','=','plan')]}" string="Número de Contrato"/>
-                    <field name="product_serv_id" domain="[('type','=','service')]"
-                           attrs="{'invisible': [('type','=','prepay')]}"/>
                     <field name="protection" attrs="{'invisible': [('type','!=','activation')]}" string="Protección de equipo"/>
-                    <field name="price_rent" attrs="{'invisible': [('type','=','prepay')]}"/>
+                    <field name="product_serv_id" domain="[('type','=','service')]"
+                           attrs="{'invisible': [('type','in',('prepay','plan'))]}"/>
+                    <field name="price_rent" attrs="{'invisible': [('type','in',('prepay','plan'))]}"/>
                 </xpath>
             </field>
         </record>

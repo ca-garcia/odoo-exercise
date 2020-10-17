@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_pivot_inh">
+            <field name="name">sale.order.pivot.inh</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_pivot" />
+            <field name="type">pivot</field>
+            <field name="arch" type="xml" >
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="type" type="col"/>
+                    <field name="contract_id" type="row"/>
+                    <field name="serial_id" type="row"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
