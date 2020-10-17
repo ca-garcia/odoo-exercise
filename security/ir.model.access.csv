@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_serial_user,serial user,model_res_serial,sales_team.group_sale_salesman,1,1,1,0
+access_res_serial_admin,serial manager,model_res_serial,sales_team.group_sale_manager,1,1,1,1
+access_res_contract_user,contract user,model_res_contract,sales_team.group_sale_salesman,1,1,1,0
+access_res_contract_admin,contract manager,model_res_contract,sales_team.group_sale_manager,1,1,1,1
